@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 function getTransformedUrl(url: string) {
     // Insert transformation after '/upload/'
-    return url.replace('/upload/', '/upload/c_fill,g_auto,h_320,w_300/'); // adjust h_80/w_300 as needed
+    return url.replace('/upload/', '/upload/h_320,w_300,c_thumb/'); // adjust h_80/w_300 as needed
   } 
 
 type ImageItem = {
@@ -41,6 +41,8 @@ const Gallery: React.FC = () => {
             <Image
               src={getTransformedUrl(img.url)}
               alt={img.public_id}
+              width={300}
+              height={320}
               className="w-full h-80 object-cover hover:scale-105 transition-transform duration-200"
             />
           </div>
