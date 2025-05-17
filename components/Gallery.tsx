@@ -1,10 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
+
 function getTransformedUrl(url: string) {
-    // Insert transformation after '/upload/'
-    return url.replace('/upload/', '/upload/h_320,w_300,c_thumb/'); // adjust h_80/w_300 as needed
-  } 
+  // Adjust image size for mobile-first approach
+  return url.replace('/upload/', '/upload/c_fill,g_auto,h_400,w_300/');
+} 
 
 type ImageItem = {
   url: string;
@@ -33,18 +34,29 @@ const Gallery: React.FC = () => {
   if (error) return <div className="mt-8 text-center text-red-500">{error}</div>;
 
   return (
-    <div className="w-full max-w-6xl mx-auto mt-12">
-      <h1 className="text-2xl font-bold mb-6 text-center">האתר של שקד</h1>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+    <div className="w-full max-w-4xl mx-auto px-2 py-8">
+      <div className="relative">
+        <h1 className="text-4xl font-bold mb-8 text-center text-purple-800">
+          <span className="inline-block transform hover:scale-105 transition-transform duration-200">
+            האתר של שקד
+          </span>
+        </h1>
+        <div className="absolute -top-4 -left-4 w-16 h-16 bg-yellow-300 rounded-full opacity-50 animate-bounce" style={{ animationDelay: '0s' }}></div>
+        <div className="absolute -bottom-4 -right-4 w-12 h-12 bg-pink-300 rounded-full opacity-50 animate-bounce" style={{ animationDelay: '0.5s' }}></div>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {images.map((img) => (
-          <div key={img.public_id} className="overflow-hidden rounded shadow">
-            <Image
-              src={getTransformedUrl(img.url)}
-              alt={img.public_id}
-              width={300}
-              height={320}
-              className="w-full h-80 object-cover hover:scale-105 transition-transform duration-200"
-            />
+          <div key={img.public_id} className="overflow-hidden rounded-lg shadow-lg bg-white transform hover:scale-105 transition-all duration-200">
+            <div className="relative aspect-[3/4]">
+              <Image
+                src={getTransformedUrl(img.url)}
+                alt={img.public_id}
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                className="object-cover"
+                priority={false}
+              />
+            </div>
           </div>
         ))}
       </div>
